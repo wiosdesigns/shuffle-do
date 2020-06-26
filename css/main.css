@@ -1,0 +1,193 @@
+:root{
+  --fg: #e6f4f0;
+  --theme: #008040;
+  --bg1: #0c100e;
+  --bg2: #121714;
+  --error: #ef626c;
+  --dim: #808080;
+}
+* {
+  box-sizing: border-box;
+  font-variant-ligatures: none;
+}
+@font-face {
+  font-family: font1;
+  src: url(/assets/hind.ttf);
+}
+*{
+  font-family: font1;
+}
+body {
+  font-family: font1;
+  padding: 0px;
+  margin: 0px;
+  font-size: 1rem;
+  background: var(--bg1);
+  color: var(--fg);
+}
+
+
+
+#app{
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 20rem 1fr;
+}
+
+h1,h2,h3,h4{
+  font-weight: 200;
+  color: var(--theme);
+  margin: 0;
+}
+p{margin:0;}
+nav{
+  background: var(--bg2);
+}
+nav>*{
+  padding: 1rem;
+  margin: 0;
+}
+nav>p:hover{
+  cursor: pointer;
+  cursor: hand;
+  background: var(--theme);
+}
+nav>p.active{
+  background: var(--theme);
+}
+
+div[id^="screen"]{
+  padding: 1rem;
+  overflow-y: scroll;
+}
+div[id^="screen"] h2{
+  grid-column: 1 / -1;
+}
+#screen-tasks, #screen-projects{
+  display: grid;
+  grid-template-columns: 1fr 20rem;
+  grid-template-rows: auto 1fr;
+  grid-gap: 1rem;
+}
+
+
+.error{
+  color: var(--error);
+}
+
+svg{
+  width: 1rem;
+  height: 1rem;
+  background: none;
+  outline: none;  
+}
+svg:hover,button:hover,input[type=submit]:hover{
+  cursor: pointer;
+  cursor: hand;
+}
+
+button, input[type=submit]{
+  border: 1px solid var(--theme);
+  color: var(--theme);
+  background: none;
+  outline: none;
+  border-radius: 10rem;
+  padding: 0.25rem 1rem;
+}
+button:hover,input[type=submit]:hover,button:active,input[type=submit]:active{
+  background: var(--theme);
+  color: var(--fg);
+}
+
+button.red{
+  border: 1px solid var(--error);
+  color: var(--error);
+}
+
+button.red:hover,button.red:active{
+  background: var(--error);
+  color: var(--fg);
+}
+label{
+  background: var(--bg2);
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  padding: 0.5rem 1rem;
+  grid-gap: 0.5rem;
+  margin-right: 1rem;
+  border-radius: 0.5rem; 
+  align-items: center;
+}
+
+.taskcard{
+  width: 100%;
+  padding: 1rem;
+  display: grid;
+  background: var(--bg2);
+  grid-template-columns: auto 1fr 1fr auto auto;
+  align-items: center;
+  grid-gap: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+}
+.taskcard.closed{
+  color: var(--dim);
+}
+.projectcard{
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: var(--bg2);
+  margin-bottom: 1rem;
+}
+input[type=text],select{
+  background: none;
+  border: none;
+  outline: none;
+  border-bottom: 1px solid var(--fg);
+  color: var(--fg);
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+input[type=text]:focus,input[type=text]:active,select:focus,select:active{
+  border-bottom: 1px solid var(--theme);
+  color: var(--theme);
+}
+
+form{
+  background: var(--bg2);
+  align-self: start;
+  padding: 1rem; 
+  border-radius: 0.5rem;
+}
+
+
+.session-task{
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  padding: 1rem 0; 
+  border-radius: 0.5rem;
+  grid-gap: 1rem;
+  margin-bottom: 1rem;
+  color: var(--dim);
+}
+.session-task:not(:first-of-type)>button{
+  display: none;
+}
+.taskName{
+  font-size: 125%;
+  color: var(--fg);
+}
+
+.session-task:first-of-type span{
+  color: var(--fg);
+}
+.session-task:first-of-type .taskName{
+  font-size: 200%;
+  color: var(--theme);
+}
+
+

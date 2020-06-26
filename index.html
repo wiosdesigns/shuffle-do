@@ -1,0 +1,142 @@
+<html>
+<head>
+  <title>Shuffle Do - Multitask like a pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="description" content="A to do list app inspired by the UX of a music player">
+  
+  <meta property="og:title" content="Shuffle Do - Multitask like a pro"/>
+  <meta property="og:url" content="https://shuffledo.wiosdesigns.xyz/"/>
+  <meta property="og:description" content="A to do list app inspired by the UX of a music player">
+  <meta property="og:image" content="/assets/ogicon.png">
+  <meta property="og:type" content="website" />
+  
+  <meta name="twitter:card" content="app"></meta>
+  <meta property="twitter:image" content="/assets/ogbg.png">
+  
+  
+  <link rel="shortcut icon" type="image/png" href="/assets/icon.png"/>
+  <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+  
+  <script src="/js/vue.min.js"></script>
+  <script src="/js/dexie.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/main.js"></script>
+  
+</head>
+<body onload="init()">
+<svg viewBox="0 0 100 100" style="display: none;">
+  <symbol id="del">
+    <path 
+      style="fill: none; stroke: var(--error); stroke-width: 10; stroke-linejoin: round; stroke-linecap: round;" 
+      d="M10 10 L90 90">
+    </path>
+    <path 
+      style="fill: none; stroke: var(--error); stroke-width: 10; stroke-linejoin: round; stroke-linecap: round;" 
+      d="M10 90 L90 10">
+    </path>
+  </symbol>
+  <symbol id="queued">
+    <circle 
+      style="fill: var(--theme); stroke: var(--theme); stroke-width: 10; stroke-linejoin: round; stroke-linecap: round;" 
+      cx="50" cy="50" r="40"  
+    />
+  </symbol>
+  <symbol id="notqueued">
+    <circle 
+      style="fill: none; stroke: var(--theme); stroke-width: 10; stroke-linejoin: round; stroke-linecap: round;" 
+      cx="50" cy="50" r="40"  
+    />
+  </symbol>
+</svg>
+<div id="app">
+  <nav>
+    <h2>
+      <img src="/assets/icon.png" style="vertical-align: -0.25rem; height: 1.5rem; width: auto;">
+      Shuffle Do
+    </h2>
+    <p v-bind:class="{active:screen=='session'}" v-on:click="screen='session'">Now Playing</p>
+    <p v-bind:class="{active:screen=='projects'}" v-on:click="screen='projects'">Projects</p>
+    <p v-bind:class="{active:screen=='tasks'}" v-on:click="screen='tasks'">Tasks</p>
+  </nav>
+  <div id="screen-session" v-if="screen=='session'">
+    <div>
+      <div v-for="task in session" class="session-task">
+        <p>
+          <span>{{task.project}}</span>
+          <br>
+          <span class="taskName">{{task.name}}</span>
+        </p>
+        <button v-on:click="removeFromSession(task.id)">Finished</button>
+        <button v-on:click="next" class="red">Snooze</button>
+      </div>
+    </div>  
+  </div>
+  <div id="screen-projects" v-if="screen=='projects'">
+    <div>
+      <p v-for="project in projects" class="projectcard">
+        {{project}}
+      </p>
+    </div>
+    <form action="javascript:app.addProject()">
+      <h3>Add a Project</h3>
+      <input type="text" v-model="newProjectName" placeholder="(New Project Name)">
+      <input type="submit" value="Add">
+    </form>
+    
+  </div>
+  <div id="screen-tasks" v-if="screen=='tasks'">
+    <div>
+      <label>
+        <span>Project:</span>
+        <select v-model="filterProject">
+          <option value="">All</option>
+          <option v-for="project in projects" v-bind:value="project">
+            {{project}}
+          </option>
+        </select>
+      </label>
+      <label>
+        <span>Show Closed Tasks</span>
+        <input type="checkbox" v-model="showClosedTasks">
+      </label>
+      <div v-for="task in tasks" class="taskcard" v-bind:class="{closed:!task.isOpen}">
+        <svg
+          v-if="sessionTaskIds.includes(task.id)"
+          v-on:click="removeFromSession(task.id)"
+          viewBox="0 0 100 100">
+          <use xlink:href="#queued"></use>
+        </svg>
+        <svg 
+          v-else
+          v-on:click="addToSession(task)"
+          viewBox="0 0 100 100">
+          <use xlink:href="#notqueued"></use>
+        </svg>
+        <span>{{task.project}}</span>
+        <span>{{task.name}}</span>
+        <button v-if="task.isOpen" class="red" v-on:click="closeTask(task.id)">
+          Close
+        </button>
+        <button v-else v-on:click="openTask(task.id)">Open</button>
+        
+        <svg viewBox="0 0 100 100" v-on:click="deleteTask(task.id)">
+          <use xlink:href="#del"></use>
+        </svg>
+        
+      </div>
+    </div>
+    <form action="javascript:app.addTask()">
+      <h3>Add a Task</h3>
+      <input type="text" v-model="newTaskName" placeholder="(New Task Name)" required>
+      <select v-model="newTaskProject" required>
+        <option v-for="project in projects" v-bind:value="project">
+          {{project}}
+        </option>
+      </select>
+      <input type="submit" value="Add">
+    </form>
+    
+  </div>
+</body>
+</html>
