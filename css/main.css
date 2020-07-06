@@ -1,10 +1,10 @@
 :root{
-  --fg: #e6f4f0;
-  --theme: #008040;
-  --bg1: #0c100e;
-  --bg2: #121714;
+  --fg: #f1f9f5;
+  --theme: #049d5f;
+  --bg1: #011219;
+  --bg2: #011d28;
   --error: #ef626c;
-  --dim: #808080;
+  --dim: #a5d8c1;
 }
 * {
   box-sizing: border-box;
